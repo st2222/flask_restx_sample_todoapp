@@ -5,4 +5,5 @@ doc/
 
 lib/
 
+.pytest_cache/
 
