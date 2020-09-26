@@ -7,7 +7,8 @@ phases:
     commands:
       - pip install --upgrade pip
       - pip install pipenv --user
-      - pipenv install --dev --skip-lock
+      - mkdir ./lib/python/
+      - pipenv install --dev --skip-lock --target ./lib/python/
       - pipenv install awscli aws-sam-cli --skip-lock
       - pipenv run sam package --template-file template.yaml --s3-bucket ${BUCKET_NAME} --output-template-file packaged-template.yml
 artifacts:
