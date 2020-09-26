@@ -1,0 +1,18 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.8
+    commands:
+      - pip install pipenv
+  pre_build:
+    commands:
+      - pipenv install --dev
+      - pytest tests/
+  #build:
+  #  commands:
+  #    - zip -r resources.zip .
+  #post_build:
+  #  commands:
+  #    - aws s3 cp resources.zip s3://codebuild-test/release --acl private
