@@ -2,7 +2,7 @@ import pytest
 import boto3
 
 from moto import mock_dynamodb2
-from app.model import TodoDAO
+from src.app.model import TodoDAO
 
 
 @pytest.fixture
