@@ -13,7 +13,6 @@ flake8 = "*"
 [packages]
 aws-wsgi = "*"
 flask-restx = "*"
-#twisted = "*"
 
 [requires]
 python_version = "3.8"
