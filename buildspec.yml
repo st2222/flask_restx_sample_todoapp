@@ -6,10 +6,10 @@ phases:
       python: 3.8
     commands:
       - pip install pipenv
-  pre_build:
-    commands:
-      - pipenv install --dev
-      - pytest tests/
+  #pre_build:
+  #  commands:
+  #    - pipenv install --dev
+  #    - pytest tests/
   #build:
   #  commands:
   #    - zip -r resources.zip .
