@@ -7,7 +7,8 @@ phases:
     commands:
       - pip install --upgrade pip
       - pip install pipenv --user
-      - pipenv shell
+      - export VENV_HOME_DIR=$(pipenv --venv)
+      - . $VENV_HOME_DIR/bin/activate
       - pipenv install --dev
       - pytest tests/
       - mkdir -p ./lib/python/
