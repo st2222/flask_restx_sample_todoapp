@@ -6,13 +6,13 @@ verify_ssl = true
 [dev-packages]
 pytest = "*"
 moto = "*"
+boto3 = "*"
+flake8 = "*"
+
 
 [packages]
 aws-wsgi = "*"
-boto3 = "*"
-flake8 = "*"
 flask-restx = "*"
-simplejson = "*"
 #twisted = "*"
 
 [requires]
