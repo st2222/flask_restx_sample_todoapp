@@ -7,7 +7,7 @@ phases:
     commands:
       - pip install --upgrade pip
       - pip install pipenv --user
-      - pip install pytest
+      - pipenv install --dev
       - mkdir -p ./lib/python/
       - PIP_TARGET="./lib/python/" pipenv install --dev --skip-lock
       - pipenv install awscli aws-sam-cli --skip-lock
