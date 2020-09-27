@@ -1,0 +1,150 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: An AWS Lambda application that calls the Lambda API.
+Parameters:
+  Email:
+    Type: String
+    Default: s07065024217@ezweb.ne.jp
+    Description: Email sent for Password Setup
+  Version:
+    Type: String
+    Default: dev
+    Description: Version
+Resources:
+  function:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: Flask-RESTX-function
+      Handler: run.lambda_handler
+      Runtime: python3.8
+      CodeUri: s3://test-codepipeline-bucket22/8f718c2ccc15515e8d77d8d80db3e85c
+      Description: Call the AWS Lambda API
+      Timeout: 10
+      Policies:
+      - AWSLambdaBasicExecutionRole
+      - AWSLambdaReadOnlyAccess
+      - AWSXrayWriteOnlyAccess
+      - AmazonDynamoDBFullAccess
+      Tracing: Active
+      Layers:
+      - Ref: libs
+      Events:
+        ProxyApi:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: CognitoApi
+            Path: '{proxy+}'
+            Method: any
+            Auth:
+              Authorizer: CognitoAuthorizer
+  authFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: function-for-auth
+      Handler: __init__.lambda_handler
+      Runtime: python3.8
+      CodeUri: s3://test-codepipeline-bucket22/501cd7f82f6d7a5e3a2f6e1e4e93612f
+      Description: Call the AWS Lambda API
+      Timeout: 10
+      Policies:
+      - AWSLambdaBasicExecutionRole
+      - AWSLambdaReadOnlyAccess
+      - AmazonCognitoPowerUser
+      Tracing: Active
+      Layers:
+      - Ref: libs
+      Events:
+        AuthApi:
+          Type: Api
+          Properties:
+            Path: '{proxy+}'
+            Method: any
+  libs:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: flask-restx-layer
+      Description: Dependencies for the blank sample app.
+      ContentUri: s3://test-codepipeline-bucket22/63754ff296571954e800dc04fc82418b
+      CompatibleRuntimes:
+      - python3.8
+  CognitoApi:
+    DependsOn: UserPool
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: CognitoApi
+      StageName:
+        Ref: Version
+      Cors:
+        AllowMethods: '''*'''
+        AllowHeaders: '''*'''
+        AllowOrigin: '''*'''
+      Auth:
+        Authorizers:
+          CognitoAuthorizer:
+            UserPoolArn:
+              Fn::GetAtt:
+              - UserPool
+              - Arn
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: false
+      UserPoolName: TestingUsers
+      UsernameAttributes:
+      - email
+      AutoVerifiedAttributes:
+      - email
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 6
+          RequireLowercase: true
+          RequireNumbers: false
+          RequireSymbols: false
+          RequireUppercase: false
+  UserPoolTokenClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId:
+        Ref: UserPool
+      GenerateSecret: false
+      ExplicitAuthFlows:
+      - USER_PASSWORD_AUTH
+      - ADMIN_NO_SRP_AUTH
+  UserPoolUser:
+    Type: AWS::Cognito::UserPoolUser
+    Properties:
+      DesiredDeliveryMediums:
+      - EMAIL
+      Username:
+        Ref: Email
+      UserPoolId:
+        Ref: UserPool
+  TodoTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: Number
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      TableName: Todos
+Outputs:
+  StageEndpoint:
+    Description: API stage endpoint
+    Value:
+      Fn::Sub: https://${CognitoApi}.execute-api.${AWS::Region}.amazonaws.com/Stage/
+  AuthApiEndpoint:
+    Description: Auth api endpoint
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Stage/
+  UserPoolId:
+    Description: UserPoolId
+    Value:
+      Ref: UserPool
+  ClientId:
+    Description: client_id
+    Value:
+      Ref: UserPoolTokenClient
