@@ -18,7 +18,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: Flask-RESTX-function
-      Handler: ./src/run.lambda_handler
+      Handler: run.lambda_handler
       Runtime: python3.8
       CodeUri: ./src/
       Description: Call the AWS Lambda API
@@ -50,7 +50,7 @@ Resources:
       FunctionName: function-for-auth
       Handler: __init__.lambda_handler
       Runtime: python3.8
-      CodeUri: ./src/auth/
+      CodeUri: ./auth/
       Description: Call the AWS Lambda API
       Timeout: 10
       # Function's execution role
