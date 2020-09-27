@@ -13,9 +13,9 @@ phases:
       - pipenv install awscli aws-sam-cli --skip-lock
       - echo ${BUCKET_NAME}
       - pipenv run sam package --template-file template.yaml --s3-bucket ${BUCKET_NAME} --output-template-file packaged-template.yaml
-      #- export VENV_HOME_DIR=$(pipenv --venv)
-      #- . $VENV_HOME_DIR/bin/activate
-      #- pytest tests/ -v
+      - export VENV_HOME_DIR=$(pipenv --venv)
+      - . $VENV_HOME_DIR/bin/activate
+      - pytest tests/ -v
 artifacts:
   files:
     - packaged-template.yaml
