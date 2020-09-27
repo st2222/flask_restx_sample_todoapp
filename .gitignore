@@ -7,4 +7,4 @@ lib/
 
 .pytest_cache/
 
-src/app/__pycache__/
+*__pycache__*
