@@ -61,7 +61,7 @@ def get_id_token(req):
       username = 's07065024217@ezweb.ne.jp'
       user_pool_id = req['user_pool_id']
       client_id = req['client_id']
-      new_password = req['password']
+      password = req['password']
     
       try:
           response = cognito_idp.admin_initiate_auth(
