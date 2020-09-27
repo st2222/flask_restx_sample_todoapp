@@ -3,7 +3,7 @@ version = 0.1
 [default.deploy]
 [default.deploy.parameters]
 stack_name = "test-stack"
-s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-198uahhtzjxrc"
+s3_bucket = "test-codepipeline-bucket22"
 s3_prefix = "test-stack"
 region = "ap-northeast-1"
 confirm_changeset = false
