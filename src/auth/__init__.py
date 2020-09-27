@@ -73,7 +73,7 @@ def get_id_token(req):
       except Exception as e:
           
           raise e
-      return respones['idToken']
+      return response
 
 
 if __name__ == '__main__':
