@@ -15,16 +15,25 @@ api = Api(app, version='1.0', title='TodoMVC API',
 ns = api.namespace('/auth', description='Auth operations')
 
 
-@ns.route('/change_pass')
-class AuthController(Resource):
+@ns.route('/init_pass')
+class ChangePassword(Resource):
     def post(self):
       print(api.payload)
+      return init_password(api.payload)
+
+
+@ns.route('/get_id_token')
+class Auth(Resource):
+    def post(self):
+        return get_id_token(api.payload)
+
+def init_password(req):
       cognito_idp = boto3.client('cognito-idp')
       username = 's07065024217@ezweb.ne.jp'
-      user_pool_id = api.payload['user_pool_id']
-      client_id = api.payload['client_id']
-      old_password = api.payload['old_password']
-      new_password = api.payload['new_password']
+      user_pool_id = req['user_pool_id']
+      client_id = req['client_id']
+      old_password = req['old_password']
+      new_password = req['new_password']
 
       response = cognito_idp.admin_initiate_auth(
           UserPoolId=user_pool_id,
@@ -44,6 +53,27 @@ class AuthController(Resource):
       )
 
       return response
+  
+
+
+def get_id_token(req):
+      cognito_idp = boto3.client('cognito-idp')
+      username = 's07065024217@ezweb.ne.jp'
+      user_pool_id = req['user_pool_id']
+      client_id = req['client_id']
+      new_password = req['password']
+    
+      try:
+          response = cognito_idp.admin_initiate_auth(
+              UserPoolId=user_pool_id,
+              ClientId=client_id,
+              AuthFlow='ADMIN_NO_SRP_AUTH',
+              AuthParameters={'USERNAME': username, 'PASSWORD': password},
+          )
+      except Exception as e:
+          
+          raise e
+      return respones['idToken']
 
 
 if __name__ == '__main__':
