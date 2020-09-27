@@ -6,8 +6,8 @@ from flask import abort
 class TodoDAO(object):
     def __init__(self):
         self.counter = 0
-        self.table = boto3.resource('dynamodb' , endpoint_url='http://localhost:8001').Table('Todos')
-        #
+        self.table = boto3.resource('dynamodb').Table('Todos')
+        # , endpoint_url='http://localhost:8001'
 
     def get(self, id):
         response = self.table.get_item(Key={'id': id})
