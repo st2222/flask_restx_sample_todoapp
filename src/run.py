@@ -1,6 +1,6 @@
 import awsgi
 # import simplejson as json
-from . import create_app
+from .app import create_app
 
 app = create_app()
 
