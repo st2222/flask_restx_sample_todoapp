@@ -15,7 +15,7 @@ phases:
       - pipenv run sam package --template-file template.yaml --s3-bucket ${BUCKET_NAME} --output-template-file packaged-template.yaml
       - export VENV_HOME_DIR=$(pipenv --venv)
       - . $VENV_HOME_DIR/bin/activate
-      #- pytest tests/ -v
+      - pytest src/tests/ -v
 artifacts:
   files:
     - packaged-template.yaml
