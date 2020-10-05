@@ -20,7 +20,7 @@ Resources:
       FunctionName: Flask-RESTX-function
       Handler: src/run.lambda_handler
       Runtime: python3.8
-      CodeUri: .
+      CodeUri: ./src
       Description: Call the AWS Lambda API
       Timeout: 10
       # Function's execution role
