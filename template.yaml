@@ -18,7 +18,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: Flask-RESTX-function
-      Handler: src/run.lambda_handler
+      Handler: run.lambda_handler
       Runtime: python3.8
       CodeUri: ./src
       Description: Call the AWS Lambda API
