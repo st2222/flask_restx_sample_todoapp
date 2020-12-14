@@ -1,5 +1,5 @@
 from flask_restx import Resource, fields, Namespace
-from src.app.model import TodoDAO
+from ..model import TodoDAO
 from flask import request
 
 ns = Namespace('todos', description='TODO operations')

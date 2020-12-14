@@ -5,7 +5,7 @@ Description: An AWS Lambda application that calls the Lambda API.
 Parameters:
   Email:
     Type: String
-    Default: s07065024217@ezweb.ne.jp
+    Default: xxx@gmail.com
     Description: Email sent for Password Setup
   Version:
     Type: String
